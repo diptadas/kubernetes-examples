@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>kube log</title>
+</head>
+<body>
+<div id="data">kube log</div>
+<script type="text/javascript">
+    (function() {
+        var data = document.getElementById("data");
+        var conn = new WebSocket("ws://127.0.0.1:8080/ws");
+        conn.onclose = function(evt) {
+            data.innerHTML = data.innerHTML + '<br>' + 'connection closed';
+        }
+        conn.onmessage = function(evt) {
+            console.log('data updated');
+            data.innerHTML = data.innerHTML + '<br>' + evt.data;
+        }
+    })();
+</script>
+</body>
+</html>
