@@ -7,9 +7,11 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/rest"
+	"log"
 )
 
 func Resource() (plural schema.GroupVersionResource, singular string) {
+	log.Println("Server Resource")
 	return schema.GroupVersionResource{
 			Group:    "admission.foocontroller.k8s.io",
 			Version:  "v1alpha1",
@@ -19,6 +21,7 @@ func Resource() (plural schema.GroupVersionResource, singular string) {
 }
 
 func Admit(admissionSpec *admission.AdmissionRequest) *admission.AdmissionResponse {
+	log.Println("Server Admit")
 	status := &admission.AdmissionResponse{}
 	status.Allowed = false
 	status.Result = &metav1.Status{
@@ -29,5 +32,6 @@ func Admit(admissionSpec *admission.AdmissionRequest) *admission.AdmissionRespon
 }
 
 func Initialize(kubeClientConfig *rest.Config, stopCh <-chan struct{}) error {
+	log.Println("Server Initialize")
 	return nil
 }

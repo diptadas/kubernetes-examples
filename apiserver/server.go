@@ -21,14 +21,35 @@ import (
 
 const defaultEtcdPathPrefix = "/registry/admission.foocontroller.k8s.io"
 
-func Run(kubeClientConfig *restclient.Config, stopCh <-chan struct{}) error {
-	scheme := runtime.NewScheme()
-	codecs := serializer.NewCodecFactory(scheme)
+var (
+	scheme = runtime.NewScheme()
+	codecs = serializer.NewCodecFactory(scheme)
+)
 
+func init() {
+	admission.AddToScheme(scheme)
+	metav1.AddToGroupVersion(scheme, schema.GroupVersion{Version: "v1"})
+
+	unversioned := schema.GroupVersion{Group: "", Version: "v1"}
+	scheme.AddUnversionedTypes(unversioned,
+		&metav1.Status{},
+		&metav1.APIVersions{},
+		&metav1.APIGroupList{},
+		&metav1.APIGroup{},
+		&metav1.APIResourceList{},
+	)
+}
+
+func Run(kubeClientConfig *restclient.Config, stopCh <-chan struct{}) error {
 	recommendedOptions := genericoptions.NewRecommendedOptions(defaultEtcdPathPrefix, codecs.LegacyCodec(admission.SchemeGroupVersion))
 	recommendedOptions.Etcd = nil
+	recommendedOptions.SecureServing.BindPort = 8443
+	recommendedOptions.CoreAPI.CoreAPIKubeconfigPath = "/home/dipta/.kube/config"
+	recommendedOptions.Authorization.RemoteKubeConfigFile = "/home/dipta/.kube/config"
+	recommendedOptions.Authentication.RemoteKubeConfigFile = "/home/dipta/.kube/config"
+	recommendedOptions.Authentication.SkipInClusterLookup = true
 
-	if err := recommendedOptions.SecureServing.MaybeDefaultWithSelfSignedCerts("192.168.99.100", nil, []net.IP{net.ParseIP("192.168.99.100")}); err != nil {
+	if err := recommendedOptions.SecureServing.MaybeDefaultWithSelfSignedCerts("localhost", nil, []net.IP{net.ParseIP("127.0.0.1")}); err != nil {
 		log.Println("31...")
 		return fmt.Errorf("error creating self-signed certificates: %v", err)
 	}
