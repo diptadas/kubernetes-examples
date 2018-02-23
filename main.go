@@ -6,6 +6,8 @@ import (
 	"k8s-extension-apiserver/controller"
 	"log"
 
+	"k8s-extension-apiserver/apiserver"
+
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 )
@@ -42,7 +44,19 @@ func main() {
 	}
 
 	controller := controller.NewController(kubeClient, fooClient)
-	if err = controller.Run(stopCh); err != nil {
-		log.Fatalf("Error running controller: %s", err.Error())
-	}
+	go func() {
+		log.Println("Starting controller...")
+		if err = controller.Run(stopCh); err != nil {
+			log.Fatalf("Error running controller: %s", err.Error())
+		}
+	}()
+
+	go func() {
+		log.Println("Starting apiserver...")
+		if err = apiserver.Run(cfg, stopCh); err != nil {
+			log.Fatalf("Error running apiserver: %s", err.Error())
+		}
+	}()
+
+	select {}
 }
