@@ -17,6 +17,7 @@ import (
 	genericapiserver "k8s.io/apiserver/pkg/server"
 	genericoptions "k8s.io/apiserver/pkg/server/options"
 	restclient "k8s.io/client-go/rest"
+	"k8s.io/apimachinery/pkg/version"
 )
 
 const defaultEtcdPathPrefix = "/registry/admission.foocontroller.k8s.io"
@@ -58,6 +59,12 @@ func Run(kubeClientConfig *restclient.Config, stopCh <-chan struct{}) error {
 	if err := recommendedOptions.ApplyTo(serverConfig, scheme); err != nil {
 		log.Println("36...")
 		return err
+	}
+
+	// complete
+	serverConfig.Version = &version.Info{
+		Major: "1",
+		Minor: "0",
 	}
 
 	genericServer, err := serverConfig.Complete().New("foo-apiserver", genericapiserver.EmptyDelegate)
