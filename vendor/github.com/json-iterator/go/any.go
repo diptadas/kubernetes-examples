@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"io"
 	"reflect"
-	"unsafe"
-	"github.com/v2pro/plz/reflect2"
 	"strconv"
+	"unsafe"
+
+	"github.com/v2pro/plz/reflect2"
 )
 
 // Any generic object representation.

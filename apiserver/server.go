@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net"
 
+	"log"
+
 	admission "k8s.io/api/admission/v1beta1"
 	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/apimachinery/pkg/apimachinery"
@@ -15,7 +17,6 @@ import (
 	genericapiserver "k8s.io/apiserver/pkg/server"
 	genericoptions "k8s.io/apiserver/pkg/server/options"
 	restclient "k8s.io/client-go/rest"
-	"log"
 )
 
 const defaultEtcdPathPrefix = "/registry/admission.foocontroller.k8s.io"

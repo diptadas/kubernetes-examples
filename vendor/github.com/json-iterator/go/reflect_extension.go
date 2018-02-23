@@ -7,6 +7,7 @@ import (
 	"strings"
 	"unicode"
 	"unsafe"
+
 	"github.com/v2pro/plz/reflect2"
 )
 
@@ -18,8 +19,8 @@ var extensions = []Extension{}
 
 // StructDescriptor describe how should we encode/decode the struct
 type StructDescriptor struct {
-	Type               reflect2.Type
-	Fields             []*Binding
+	Type   reflect2.Type
+	Fields []*Binding
 }
 
 // GetField get one field from the descriptor by its name.
@@ -355,8 +356,8 @@ func describeStruct(ctx *ctx, typ reflect2.Type) *StructDescriptor {
 }
 func createStructDescriptor(ctx *ctx, typ reflect2.Type, bindings []*Binding, embeddedBindings []*Binding) *StructDescriptor {
 	structDescriptor := &StructDescriptor{
-		Type:               typ,
-		Fields:             bindings,
+		Type:   typ,
+		Fields: bindings,
 	}
 	for _, extension := range extensions {
 		extension.UpdateStructDescriptor(structDescriptor)

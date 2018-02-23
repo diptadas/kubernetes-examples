@@ -1,11 +1,12 @@
 package jsoniter
 
 import (
+	"fmt"
 	"reflect"
 	"sort"
 	"unsafe"
+
 	"github.com/v2pro/plz/reflect2"
-	"fmt"
 )
 
 func decoderOfMap(ctx *ctx, typ reflect2.Type) ValDecoder {
