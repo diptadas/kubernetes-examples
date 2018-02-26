@@ -1,0 +1,62 @@
+# kube lacks the service serving cert signer, so provide a manual secret for it
+apiVersion: v1
+kind: Secret
+metadata:
+  name: foo-apiserver-cert
+  namespace: default
+  labels:
+    app: foo
+type: kubernetes.io/tls
+data:
+  tls.crt: ${TLS_SERVING_CERT}
+  tls.key: ${TLS_SERVING_KEY}
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: foo-operator
+  namespace: default
+  labels:
+    app: foo
+  initializers:
+    pending: []
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: foo
+  template:
+    metadata:
+      labels:
+        app: foo
+    spec:
+      containers:
+      - name: operator
+        image: diptadas/foo
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8443
+        volumeMounts:
+        - mountPath: /var/serving-cert
+          name: serving-cert
+      volumes:
+      - name: serving-cert
+        secret:
+          defaultMode: 420
+          secretName: foo-apiserver-cert
+---
+# to be able to expose TSB inside the cluster
+apiVersion: v1
+kind: Service
+metadata:
+  name: foo-operator
+  namespace: default
+  labels:
+    app: foo
+spec:
+  ports:
+  - name: admission
+    port: 443
+    targetPort: 8443
+  selector:
+    app: foo

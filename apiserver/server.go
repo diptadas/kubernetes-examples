@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"net"
 
-	"log"
-
 	admission "k8s.io/api/admission/v1beta1"
 	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/apimachinery/pkg/apimachinery"
@@ -13,11 +11,11 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
+	"k8s.io/apimachinery/pkg/version"
 	"k8s.io/apiserver/pkg/registry/rest"
 	genericapiserver "k8s.io/apiserver/pkg/server"
 	genericoptions "k8s.io/apiserver/pkg/server/options"
 	restclient "k8s.io/client-go/rest"
-	"k8s.io/apimachinery/pkg/version"
 )
 
 const defaultEtcdPathPrefix = "/registry/admission.foocontroller.k8s.io"
@@ -45,19 +43,16 @@ func Run(kubeClientConfig *restclient.Config, stopCh <-chan struct{}) error {
 	recommendedOptions := genericoptions.NewRecommendedOptions(defaultEtcdPathPrefix, codecs.LegacyCodec(admission.SchemeGroupVersion))
 	recommendedOptions.Etcd = nil
 	recommendedOptions.SecureServing.BindPort = 8443
-	recommendedOptions.CoreAPI.CoreAPIKubeconfigPath = "/home/dipta/.kube/config"
-	recommendedOptions.Authorization.RemoteKubeConfigFile = "/home/dipta/.kube/config"
-	recommendedOptions.Authentication.RemoteKubeConfigFile = "/home/dipta/.kube/config"
+	recommendedOptions.SecureServing.ServerCert.CertKey.CertFile = "/var/serving-cert/tls.crt"
+	recommendedOptions.SecureServing.ServerCert.CertKey.KeyFile = "/var/serving-cert/tls.key"
 	recommendedOptions.Authentication.SkipInClusterLookup = true
 
 	if err := recommendedOptions.SecureServing.MaybeDefaultWithSelfSignedCerts("localhost", nil, []net.IP{net.ParseIP("127.0.0.1")}); err != nil {
-		log.Println("31...")
 		return fmt.Errorf("error creating self-signed certificates: %v", err)
 	}
 
 	serverConfig := genericapiserver.NewRecommendedConfig(codecs)
 	if err := recommendedOptions.ApplyTo(serverConfig, scheme); err != nil {
-		log.Println("36...")
 		return err
 	}
 
@@ -69,7 +64,6 @@ func Run(kubeClientConfig *restclient.Config, stopCh <-chan struct{}) error {
 
 	genericServer, err := serverConfig.Complete().New("foo-apiserver", genericapiserver.EmptyDelegate)
 	if err != nil {
-		log.Println("43...")
 		return err
 	}
 
@@ -124,7 +118,6 @@ func Run(kubeClientConfig *restclient.Config, stopCh <-chan struct{}) error {
 	apiGroupInfo.GroupMeta.GroupVersion = apiGroupInfo.GroupMeta.GroupVersions[0]
 
 	if err := genericServer.InstallAPIGroup(&apiGroupInfo); err != nil {
-		log.Println("98...")
 		return err
 	}
 
