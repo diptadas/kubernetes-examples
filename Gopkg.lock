@@ -27,6 +27,31 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/appscode/go"
+  packages = [
+    "strings",
+    "types"
+  ]
+  revision = "83e7fc1967ed737eedfc87da60c42e9fc4dc684c"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/appscode/kutil"
+  packages = [
+    ".",
+    "core/v1",
+    "meta"
+  ]
+  revision = "6a5c108367b50c78b783e51490f015d03ce62259"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/appscode/mergo"
+  packages = ["."]
+  revision = "e3000cb3d28c72b837601cac94debd91032d19fe"
+
+[[projects]]
+  branch = "master"
   name = "github.com/beorn7/perks"
   packages = ["quantile"]
   revision = "4c0e84591b9aa9e6dcfdf3e020114cd81f89d5f9"
@@ -173,6 +198,17 @@
   revision = "e89373fe6b4a7413d7acd6da1725b83ef713e6e4"
 
 [[projects]]
+  name = "github.com/google/go-cmp"
+  packages = [
+    "cmp",
+    "cmp/internal/diff",
+    "cmp/internal/function",
+    "cmp/internal/value"
+  ]
+  revision = "3af367b6b30c263d47e8895973edcca9a49cf029"
+  version = "v0.2.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/google/gofuzz"
   packages = ["."]
@@ -271,6 +307,12 @@
   version = "v2.0.1"
 
 [[projects]]
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
+  version = "v0.8.0"
+
+[[projects]]
   name = "github.com/prometheus/client_golang"
   packages = ["prometheus"]
   revision = "c5b7fccd204277076155f10851dad72b76a49317"
@@ -304,6 +346,12 @@
   revision = "282c8707aa210456a825798969cc27edda34992a"
 
 [[projects]]
+  name = "github.com/sergi/go-diff"
+  packages = ["diffmatchpatch"]
+  revision = "1744e2970ca51c86172c8190fadad617561ed6e7"
+  version = "v1.0.0"
+
+[[projects]]
   name = "github.com/spf13/pflag"
   packages = ["."]
   revision = "e57e3eeb33f795204c1ca35f56c44f83227c6e66"
@@ -323,6 +371,21 @@
   ]
   revision = "10fc95fad3224a032229e59f6e7023137d82b526"
   version = "0.9.1"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/yudai/gojsondiff"
+  packages = [
+    ".",
+    "formatter"
+  ]
+  revision = "e21612694bdd50975f93cd5eaccb457477128e28"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/yudai/golcs"
+  packages = ["."]
+  revision = "ecda9a501e8220fae3b4b600c3db4b0ba22cfc68"
 
 [[projects]]
   branch = "master"
@@ -509,6 +572,7 @@
     "pkg/util/httpstream",
     "pkg/util/intstr",
     "pkg/util/json",
+    "pkg/util/jsonmergepatch",
     "pkg/util/mergepatch",
     "pkg/util/net",
     "pkg/util/proxy",
@@ -761,6 +825,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "eb9daf765a0c47e9903e6ea2047ef22b229024f396db512c9fb5dc5a8d892e07"
+  inputs-digest = "807b7b86956d50b088de90a8d45d3f191ac70c38bffe9e80b308e284cb13a845"
   solver-name = "gps-cdcl"
   solver-version = 1

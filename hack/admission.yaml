@@ -1,4 +1,3 @@
-# register to intercept foo CRD creates / updates
 apiVersion: admissionregistration.k8s.io/v1beta1
 kind: ValidatingWebhookConfiguration
 metadata:

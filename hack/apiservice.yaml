@@ -1,4 +1,3 @@
-# register as aggregated apiserver
 apiVersion: apiregistration.k8s.io/v1beta1
 kind: APIService
 metadata:

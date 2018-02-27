@@ -21,17 +21,23 @@ import (
 	fooscheme "k8s-extension-apiserver/client/clientset/versioned/scheme"
 	informers "k8s-extension-apiserver/client/informers/externalversions"
 	listers "k8s-extension-apiserver/client/listers/foocontroller/v1alpha1"
+
+	"strings"
+
+	core_util "github.com/appscode/kutil/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 const (
 	MaxRequeues           = 3
-	SuccessSynced         = "Synced"
+	SyncSucceed           = "Synced"
+	SyncFailed            = "Failed"
 	MessageResourceSynced = "Foo synced successfully"
+	MessageSyncFailed     = "Failed to sync Foo"
 	EventComponent        = "foo-controller"
-	ResyncPeriod          = time.Second * 30
+	ResyncPeriod          = time.Minute * 5
 )
 
-// Controller is the controller implementation for Foo resources
 type Controller struct {
 	kubeClient         kubernetes.Interface
 	fooClient          clientset.Interface
@@ -144,7 +150,29 @@ func (c *Controller) syncHandler(key string) error {
 
 	log.Printf("Sync/Add/Update for foo '%s'", key)
 
-	// create/patch configMap specified in foo.Spec
-	c.recorder.Event(foo, corev1.EventTypeNormal, SuccessSynced, MessageResourceSynced)
+	meta := metav1.ObjectMeta{
+		Name:      foo.Spec.ConfigMapName,
+		Namespace: foo.Namespace,
+	}
+
+	_, _, err = core_util.CreateOrPatchConfigMap(c.kubeClient, meta, func(obj *corev1.ConfigMap) *corev1.ConfigMap {
+		obj.OwnerReferences = append(obj.OwnerReferences, metav1.OwnerReference{
+			Name:       foo.Name,
+			Kind:       "Foo",
+			APIVersion: "v1alpha1",
+			UID:        foo.UID,
+		})
+		if obj.Data == nil {
+			obj.Data = make(map[string]string)
+		}
+		obj.Data[foo.Name] = strings.Join(foo.Spec.Data, ",")
+		return obj
+	})
+	if err != nil {
+		c.recorder.Event(foo, corev1.EventTypeWarning, SyncFailed, MessageSyncFailed)
+		return err
+	}
+
+	c.recorder.Event(foo, corev1.EventTypeNormal, SyncSucceed, MessageResourceSynced)
 	return nil
 }

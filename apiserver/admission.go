@@ -3,11 +3,14 @@ package apiserver
 import (
 	"net/http"
 
+	"encoding/json"
+	api "k8s-extension-apiserver/apis/foocontroller/v1alpha1"
+	"log"
+
 	admission "k8s.io/api/admission/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/rest"
-	"log"
 )
 
 func Resource() (plural schema.GroupVersionResource, singular string) {
@@ -20,15 +23,28 @@ func Resource() (plural schema.GroupVersionResource, singular string) {
 		"admissionreview"
 }
 
-func Admit(admissionSpec *admission.AdmissionRequest) *admission.AdmissionResponse {
+func Admit(req *admission.AdmissionRequest) *admission.AdmissionResponse {
 	log.Println("Server Admit")
-	status := &admission.AdmissionResponse{}
-	status.Allowed = false
-	status.Result = &metav1.Status{
-		Status: metav1.StatusFailure, Code: http.StatusBadRequest, Reason: metav1.StatusReasonBadRequest,
-		Message: "force error",
+	obj := &api.Foo{}
+	if err := json.Unmarshal(req.Object.Raw, obj); err != nil {
+		return &admission.AdmissionResponse{
+			Allowed: false,
+			Result: &metav1.Status{
+				Status: metav1.StatusFailure, Code: http.StatusBadRequest, Reason: metav1.StatusReasonBadRequest,
+				Message: "invalid foo object",
+			},
+		}
 	}
-	return status
+	if obj.Spec.ConfigMapName == "" {
+		return &admission.AdmissionResponse{
+			Allowed: false,
+			Result: &metav1.Status{
+				Status: metav1.StatusFailure, Code: http.StatusBadRequest, Reason: metav1.StatusReasonBadRequest,
+				Message: "configMapName not specified",
+			},
+		}
+	}
+	return &admission.AdmissionResponse{Allowed: true}
 }
 
 func Initialize(kubeClientConfig *rest.Config, stopCh <-chan struct{}) error {
