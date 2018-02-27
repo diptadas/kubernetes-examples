@@ -44,7 +44,13 @@ func Admit(req *admission.AdmissionRequest) *admission.AdmissionResponse {
 			},
 		}
 	}
-	return &admission.AdmissionResponse{Allowed: true}
+	// mutating foo spec
+	obj.Spec.ConfigMapName = "k8s-" + obj.Spec.ConfigMapName
+	patch := `[{ "op": "replace", "path": "/spec/configMapName", "value": ` + obj.Spec.ConfigMapName + `}]`
+	return &admission.AdmissionResponse{
+		Allowed: true,
+		Patch:   []byte(patch),
+	}
 }
 
 func Initialize(kubeClientConfig *rest.Config, stopCh <-chan struct{}) error {

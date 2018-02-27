@@ -1,0 +1,1 @@
+[{ "op": "replace", "path": "/spec/configMapName", "value": "k8s-foo-one"}]
