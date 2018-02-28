@@ -20,8 +20,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-
-	foocontroller "k8s-admission-webhook/apis/foocontroller"
+	"k8s-admission-webhook/apis/foocontroller"
 )
 
 // SchemeGroupVersion is group version used to register these objects
