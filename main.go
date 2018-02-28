@@ -6,10 +6,9 @@ import (
 	"k8s-extension-apiserver/controller"
 	"log"
 
-	"k8s-extension-apiserver/apiserver"
-
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
+	"k8s-extension-apiserver/admission"
 )
 
 var (
@@ -53,7 +52,7 @@ func main() {
 
 	go func() {
 		log.Println("Starting apiserver...")
-		if err = apiserver.Run(cfg, stopCh); err != nil {
+		if err = admission.Run(stopCh); err != nil {
 			log.Fatalf("Error running apiserver: %s", err.Error())
 		}
 	}()

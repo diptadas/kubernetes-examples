@@ -28,10 +28,7 @@
 [[projects]]
   branch = "master"
   name = "github.com/appscode/go"
-  packages = [
-    "strings",
-    "types"
-  ]
+  packages = ["types"]
   revision = "83e7fc1967ed737eedfc87da60c42e9fc4dc684c"
 
 [[projects]]
@@ -287,6 +284,15 @@
   name = "github.com/mxk/go-flowrate"
   packages = ["flowrate"]
   revision = "cca7078d478f8520f85629ad7c68962d31ed7682"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/openshift/generic-admission-server"
+  packages = [
+    "pkg/apiserver",
+    "pkg/registry/admissionreview"
+  ]
+  revision = "0d37a6c7bb2c96d2363c0fd934d2e7cdb7d90ebc"
 
 [[projects]]
   name = "github.com/pborman/uuid"
@@ -825,6 +831,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "807b7b86956d50b088de90a8d45d3f191ac70c38bffe9e80b308e284cb13a845"
+  inputs-digest = "ce0e3471cbc7cb9543070ba24e33c94aed1646348aba871b5584ffc0141fda72"
   solver-name = "gps-cdcl"
   solver-version = 1

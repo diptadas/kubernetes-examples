@@ -24,7 +24,7 @@ cat foo-crd.yaml | ./onessl envsubst | kubectl apply -f -
 # create operator deployment, service and tls secret
 cat operator.yaml | ./onessl envsubst | kubectl apply -f -
 
-# create ValidatingWebhookConfiguration
+# create Validating/Mutating WebhookConfiguration
 cat admission.yaml | ./onessl envsubst | kubectl apply -f -
 
 # create APIService

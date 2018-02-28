@@ -3,10 +3,9 @@ package jsoniter
 import (
 	"encoding/json"
 	"io"
-	"sync"
 	"unsafe"
-
 	"github.com/v2pro/plz/reflect2"
+	"sync"
 )
 
 // Config customize how the API should behave.

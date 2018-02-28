@@ -1,9 +1,8 @@
 package jsoniter
 
 import (
-	"encoding/json"
 	"unsafe"
-
+	"encoding/json"
 	"github.com/v2pro/plz/reflect2"
 )
 

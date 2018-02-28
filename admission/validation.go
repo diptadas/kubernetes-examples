@@ -1,4 +1,4 @@
-package apiserver
+package admission
 
 import (
 	"net/http"
@@ -13,18 +13,20 @@ import (
 	"k8s.io/client-go/rest"
 )
 
-func Resource() (plural schema.GroupVersionResource, singular string) {
-	log.Println("Server Resource")
+type FooValidator struct{}
+
+func (*FooValidator) ValidatingResource() (plural schema.GroupVersionResource, singular string) {
 	return schema.GroupVersionResource{
-			Group:    "admission.foocontroller.k8s.io",
+			Group:    "validation.foocontroller.k8s.io",
 			Version:  "v1alpha1",
 			Resource: "admissionreviews",
 		},
 		"admissionreview"
 }
 
-func Admit(req *admission.AdmissionRequest) *admission.AdmissionResponse {
-	log.Println("Server Admit")
+func (*FooValidator) Validate(req *admission.AdmissionRequest) *admission.AdmissionResponse {
+	log.Println("FooValidator: " + req.Operation)
+
 	obj := &api.Foo{}
 	if err := json.Unmarshal(req.Object.Raw, obj); err != nil {
 		return &admission.AdmissionResponse{
@@ -35,25 +37,21 @@ func Admit(req *admission.AdmissionRequest) *admission.AdmissionResponse {
 			},
 		}
 	}
-	if obj.Spec.ConfigMapName == "" {
+
+	if obj.Annotations == nil || obj.Annotations["initial-configmap"] != obj.Spec.ConfigMapName {
 		return &admission.AdmissionResponse{
 			Allowed: false,
 			Result: &metav1.Status{
 				Status: metav1.StatusFailure, Code: http.StatusBadRequest, Reason: metav1.StatusReasonBadRequest,
-				Message: "configMapName not specified",
+				Message: "invalid configMapName",
 			},
 		}
 	}
-	// mutating foo spec
-	obj.Spec.ConfigMapName = "k8s-" + obj.Spec.ConfigMapName
-	patch := `[{ "op": "replace", "path": "/spec/configMapName", "value": ` + obj.Spec.ConfigMapName + `}]`
-	return &admission.AdmissionResponse{
-		Allowed: true,
-		Patch:   []byte(patch),
-	}
+
+	return &admission.AdmissionResponse{Allowed: true}
 }
 
-func Initialize(kubeClientConfig *rest.Config, stopCh <-chan struct{}) error {
-	log.Println("Server Initialize")
+func (*FooValidator) Initialize(kubeClientConfig *rest.Config, stopCh <-chan struct{}) error {
+	log.Println("FooValidator: Initialize")
 	return nil
 }

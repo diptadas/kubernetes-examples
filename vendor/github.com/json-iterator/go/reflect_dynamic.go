@@ -1,10 +1,9 @@
 package jsoniter
 
 import (
-	"reflect"
-	"unsafe"
-
 	"github.com/v2pro/plz/reflect2"
+	"unsafe"
+	"reflect"
 )
 
 type dynamicEncoder struct {
