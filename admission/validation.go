@@ -38,7 +38,32 @@ func (*FooValidator) Validate(req *admission.AdmissionRequest) *admission.Admiss
 		}
 	}
 
-	if obj.Annotations == nil || obj.Annotations["initial-configmap"] != obj.Spec.ConfigMapName {
+	if req.Operation == admission.Delete {
+		if obj.Annotations != nil && obj.Annotations["deny-delete"] == "true" {
+			return &admission.AdmissionResponse{
+				Allowed: false,
+				Result: &metav1.Status{
+					Status: metav1.StatusFailure, Code: http.StatusBadRequest, Reason: metav1.StatusReasonBadRequest,
+					Message: "force denied delete",
+				},
+			}
+		}
+		return &admission.AdmissionResponse{Allowed: true}
+	}
+
+	oldObj := &api.Foo{}
+	if err := json.Unmarshal(req.OldObject.Raw, oldObj); err != nil {
+		return &admission.AdmissionResponse{
+			Allowed: false,
+			Result: &metav1.Status{
+				Status: metav1.StatusFailure, Code: http.StatusBadRequest, Reason: metav1.StatusReasonBadRequest,
+				Message: "invalid old foo object",
+			},
+		}
+	}
+
+	// deny update if configMapName changed
+	if obj.Spec.ConfigMapName != oldObj.Spec.ConfigMapName {
 		return &admission.AdmissionResponse{
 			Allowed: false,
 			Result: &metav1.Status{

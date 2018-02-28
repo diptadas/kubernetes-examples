@@ -48,8 +48,8 @@ func (*FooMutator) Admit(req *admission.AdmissionRequest) *admission.AdmissionRe
 		}
 	}
 
-	// mutating foo: add "initial-configmap" annotation
-	patch := `[{"op": "add", "path": "/metadata/annotations/initial-configmap", "value": "` + obj.Spec.ConfigMapName + `"}]`
+	// mutating foo: add "deny-delete" annotation
+	patch := `[{"op": "add", "path": "/metadata/annotations/deny-delete", "value": "true"}]`
 	return &admission.AdmissionResponse{
 		Allowed: true,
 		Patch:   []byte(patch),

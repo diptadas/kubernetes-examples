@@ -13,6 +13,7 @@ webhooks:
   rules:
   - operations:
     - UPDATE
+    - DELETE
     apiGroups:
     - foocontroller.k8s.io
     apiVersions:
