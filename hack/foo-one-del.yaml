@@ -1,0 +1,11 @@
+apiVersion: foocontroller.k8s.io/v1alpha1
+kind: Foo
+metadata:
+  name: foo-one
+  annotations:
+    deny-delete: "false"
+spec:
+  configMapName: foo-one
+  data:
+  - hello
+  - world

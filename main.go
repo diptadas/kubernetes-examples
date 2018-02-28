@@ -52,7 +52,7 @@ func main() {
 
 	go func() {
 		log.Println("Starting apiserver...")
-		if err = admission.Run(stopCh); err != nil {
+		if err = admission.Run(stopCh, fooClient); err != nil {
 			log.Fatalf("Error running apiserver: %s", err.Error())
 		}
 	}()

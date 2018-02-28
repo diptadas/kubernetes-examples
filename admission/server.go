@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net"
 
+	clientset "k8s-admission-webhook/client/clientset/versioned"
+
 	"github.com/openshift/generic-admission-server/pkg/apiserver"
 	admission "k8s.io/api/admission/v1beta1"
 	genericapiserver "k8s.io/apiserver/pkg/server"
@@ -12,7 +14,7 @@ import (
 
 const defaultEtcdPathPrefix = "/registry/admission.foocontroller.k8s.io"
 
-func Run(stopCh <-chan struct{}) error {
+func Run(stopCh <-chan struct{}, fooClient clientset.Interface) error {
 	recommendedOptions := genericoptions.NewRecommendedOptions(defaultEtcdPathPrefix, apiserver.Codecs.LegacyCodec(admission.SchemeGroupVersion))
 	recommendedOptions.Etcd = nil
 	recommendedOptions.SecureServing.BindPort = 8443
@@ -33,7 +35,7 @@ func Run(stopCh <-chan struct{}) error {
 		GenericConfig: serverConfig,
 		ExtraConfig: apiserver.ExtraConfig{
 			AdmissionHooks: []apiserver.AdmissionHook{
-				&FooValidator{},
+				&FooValidator{fooClient: fooClient},
 				&FooMutator{},
 			},
 		},
