@@ -17,9 +17,9 @@ limitations under the License.
 package fake
 
 import (
-	clientset "k8s-extension-apiserver/client/clientset/versioned"
-	foocontrollerv1alpha1 "k8s-extension-apiserver/client/clientset/versioned/typed/foocontroller/v1alpha1"
-	fakefoocontrollerv1alpha1 "k8s-extension-apiserver/client/clientset/versioned/typed/foocontroller/v1alpha1/fake"
+	clientset "k8s-admission-webhook/client/clientset/versioned"
+	foocontrollerv1alpha1 "k8s-admission-webhook/client/clientset/versioned/typed/foocontroller/v1alpha1"
+	fakefoocontrollerv1alpha1 "k8s-admission-webhook/client/clientset/versioned/typed/foocontroller/v1alpha1/fake"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"

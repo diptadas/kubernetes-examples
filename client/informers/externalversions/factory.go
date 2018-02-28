@@ -19,9 +19,9 @@ limitations under the License.
 package externalversions
 
 import (
-	versioned "k8s-extension-apiserver/client/clientset/versioned"
-	foocontroller "k8s-extension-apiserver/client/informers/externalversions/foocontroller"
-	internalinterfaces "k8s-extension-apiserver/client/informers/externalversions/internalinterfaces"
+	versioned "k8s-admission-webhook/client/clientset/versioned"
+	foocontroller "k8s-admission-webhook/client/informers/externalversions/foocontroller"
+	internalinterfaces "k8s-admission-webhook/client/informers/externalversions/internalinterfaces"
 	reflect "reflect"
 	sync "sync"
 	time "time"

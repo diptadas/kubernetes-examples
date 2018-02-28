@@ -19,8 +19,8 @@ limitations under the License.
 package foocontroller
 
 import (
-	v1alpha1 "k8s-extension-apiserver/client/informers/externalversions/foocontroller/v1alpha1"
-	internalinterfaces "k8s-extension-apiserver/client/informers/externalversions/internalinterfaces"
+	v1alpha1 "k8s-admission-webhook/client/informers/externalversions/foocontroller/v1alpha1"
+	internalinterfaces "k8s-admission-webhook/client/informers/externalversions/internalinterfaces"
 )
 
 // Interface provides access to each of this group's versions.

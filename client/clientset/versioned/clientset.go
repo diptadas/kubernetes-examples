@@ -17,7 +17,7 @@ limitations under the License.
 package versioned
 
 import (
-	foocontrollerv1alpha1 "k8s-extension-apiserver/client/clientset/versioned/typed/foocontroller/v1alpha1"
+	foocontrollerv1alpha1 "k8s-admission-webhook/client/clientset/versioned/typed/foocontroller/v1alpha1"
 
 	glog "github.com/golang/glog"
 	discovery "k8s.io/client-go/discovery"

@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"encoding/json"
-	api "k8s-extension-apiserver/apis/foocontroller/v1alpha1"
+	api "k8s-admission-webhook/apis/foocontroller/v1alpha1"
 	"log"
 
 	admission "k8s.io/api/admission/v1beta1"

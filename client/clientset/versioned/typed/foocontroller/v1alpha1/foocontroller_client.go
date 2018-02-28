@@ -17,8 +17,8 @@ limitations under the License.
 package v1alpha1
 
 import (
-	v1alpha1 "k8s-extension-apiserver/apis/foocontroller/v1alpha1"
-	"k8s-extension-apiserver/client/clientset/versioned/scheme"
+	v1alpha1 "k8s-admission-webhook/apis/foocontroller/v1alpha1"
+	"k8s-admission-webhook/client/clientset/versioned/scheme"
 
 	serializer "k8s.io/apimachinery/pkg/runtime/serializer"
 	rest "k8s.io/client-go/rest"

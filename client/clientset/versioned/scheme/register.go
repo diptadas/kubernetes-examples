@@ -17,7 +17,7 @@ limitations under the License.
 package scheme
 
 import (
-	foocontrollerv1alpha1 "k8s-extension-apiserver/apis/foocontroller/v1alpha1"
+	foocontrollerv1alpha1 "k8s-admission-webhook/apis/foocontroller/v1alpha1"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"

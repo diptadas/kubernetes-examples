@@ -19,10 +19,10 @@ limitations under the License.
 package v1alpha1
 
 import (
-	foocontroller_v1alpha1 "k8s-extension-apiserver/apis/foocontroller/v1alpha1"
-	versioned "k8s-extension-apiserver/client/clientset/versioned"
-	internalinterfaces "k8s-extension-apiserver/client/informers/externalversions/internalinterfaces"
-	v1alpha1 "k8s-extension-apiserver/client/listers/foocontroller/v1alpha1"
+	foocontroller_v1alpha1 "k8s-admission-webhook/apis/foocontroller/v1alpha1"
+	versioned "k8s-admission-webhook/client/clientset/versioned"
+	internalinterfaces "k8s-admission-webhook/client/informers/externalversions/internalinterfaces"
+	v1alpha1 "k8s-admission-webhook/client/listers/foocontroller/v1alpha1"
 	time "time"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
