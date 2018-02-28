@@ -6,9 +6,10 @@ import (
 	"k8s-admission-webhook/controller"
 	"log"
 
+	"k8s-admission-webhook/admission"
+
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
-	"k8s-admission-webhook/admission"
 )
 
 var (
