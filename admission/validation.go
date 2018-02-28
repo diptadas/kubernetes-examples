@@ -17,11 +17,11 @@ type FooValidator struct{}
 
 func (*FooValidator) ValidatingResource() (plural schema.GroupVersionResource, singular string) {
 	return schema.GroupVersionResource{
-			Group:    "validation.foocontroller.k8s.io",
+			Group:    "admission.foocontroller.k8s.io",
 			Version:  "v1alpha1",
-			Resource: "admissionreviews",
+			Resource: "validations",
 		},
-		"admissionreview"
+		"validation"
 }
 
 func (*FooValidator) Validate(req *admission.AdmissionRequest) *admission.AdmissionResponse {

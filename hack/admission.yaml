@@ -8,7 +8,7 @@ webhooks:
     service:
       namespace: default
       name: kubernetes
-      path: /apis/validation.foocontroller.k8s.io/v1alpha1/admissionreviews
+      path: /apis/admission.foocontroller.k8s.io/v1alpha1/validations
     caBundle: ${KUBE_CA}
   rules:
   - operations:
@@ -31,7 +31,7 @@ webhooks:
     service:
       namespace: default
       name: kubernetes
-      path: /apis/mutation.foocontroller.k8s.io/v1alpha1/admissionreviews
+      path: /apis/admission.foocontroller.k8s.io/v1alpha1/mutations
     caBundle: ${KUBE_CA}
   rules:
   - operations:

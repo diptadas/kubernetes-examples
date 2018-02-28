@@ -17,11 +17,11 @@ type FooMutator struct{}
 
 func (*FooMutator) MutatingResource() (plural schema.GroupVersionResource, singular string) {
 	return schema.GroupVersionResource{
-			Group:    "mutation.foocontroller.k8s.io",
+			Group:    "admission.foocontroller.k8s.io",
 			Version:  "v1alpha1",
-			Resource: "admissionreviews",
+			Resource: "mutations",
 		},
-		"admissionreview"
+		"mutation"
 }
 
 func (*FooMutator) Admit(req *admission.AdmissionRequest) *admission.AdmissionResponse {
