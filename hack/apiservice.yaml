@@ -1,0 +1,15 @@
+apiVersion: apiregistration.k8s.io/v1beta1
+kind: APIService
+metadata:
+  name: v1alpha1.foocontroller.k8s.io
+  labels:
+    app: foo
+spec:
+  caBundle: ${SERVICE_SERVING_CERT_CA}
+  group: foocontroller.k8s.io
+  groupPriorityMinimum: 1000
+  versionPriority: 15
+  service:
+    name: foo-operator
+    namespace: default
+  version: v1alpha1
