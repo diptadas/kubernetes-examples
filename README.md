@@ -18,16 +18,16 @@ type FooSpec struct {
 
 ## Mutation
 
-- Path: /apis/admission.foocontroller.k8s.io/v1alpha1/mutations
+- Path: `/apis/admission.foocontroller.k8s.io/v1alpha1/mutations`
 - Operations:
-  - CREATE: Allow if `configMapName` not empty and add `deny-delete=true` annotation
+  - CREATE: Allow if `configMapName` not empty and add `deny-delete=true` annotation.
 
 ## Validation
 
-- Path: /apis/admission.foocontroller.k8s.io/v1alpha1/validations
+- Path: `/apis/admission.foocontroller.k8s.io/v1alpha1/validations`
 - Operations:
-  - UPDATE: Don't allow if `configMapName` changed
-  - DELETE: Don't allow if annotation `deny-delete=true`
+  - UPDATE: Don't allow if `configMapName` changed.
+  - DELETE: Don't allow if annotation `deny-delete=true`.
 
 ## Controller
 
