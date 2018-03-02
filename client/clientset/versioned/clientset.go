@@ -13,13 +13,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
 package versioned
 
 import (
-	foocontrollerv1alpha1 "k8s-admission-webhook/client/clientset/versioned/typed/foocontroller/v1alpha1"
-
 	glog "github.com/golang/glog"
+	foocontrollerv1alpha1 "k8s-admission-webhook/client/clientset/versioned/typed/foocontroller/v1alpha1"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"

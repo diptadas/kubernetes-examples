@@ -29,3 +29,6 @@ cat admission.yaml | ./onessl envsubst | kubectl apply -f -
 
 # create APIService
 cat apiservice.yaml | ./onessl envsubst | kubectl apply -f -
+
+# cleanup
+rm foo ca.crt ca.key server.crt server.key

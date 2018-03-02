@@ -23,12 +23,11 @@ import (
 	versioned "k8s-admission-webhook/client/clientset/versioned"
 	internalinterfaces "k8s-admission-webhook/client/informers/externalversions/internalinterfaces"
 	v1alpha1 "k8s-admission-webhook/client/listers/foocontroller/v1alpha1"
-	time "time"
-
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	watch "k8s.io/apimachinery/pkg/watch"
 	cache "k8s.io/client-go/tools/cache"
+	time "time"
 )
 
 // FooInformer provides access to a shared informer and lister for

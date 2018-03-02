@@ -13,12 +13,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
 package fake
 
 import (
 	foocontrollerv1alpha1 "k8s-admission-webhook/apis/foocontroller/v1alpha1"
-
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -39,7 +37,7 @@ func init() {
 //
 //   import (
 //     "k8s.io/client-go/kubernetes"
-//     clientsetscheme "k8s.io/client-go/kubernetes/scheme"
+//     clientsetscheme "k8s.io/client-go/kuberentes/scheme"
 //     aggregatorclientsetscheme "k8s.io/kube-aggregator/pkg/client/clientset_generated/clientset/scheme"
 //   )
 //
@@ -50,4 +48,5 @@ func init() {
 // correctly.
 func AddToScheme(scheme *runtime.Scheme) {
 	foocontrollerv1alpha1.AddToScheme(scheme)
+
 }

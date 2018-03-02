@@ -13,13 +13,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
 package v1alpha1
 
 import (
 	v1alpha1 "k8s-admission-webhook/apis/foocontroller/v1alpha1"
 	"k8s-admission-webhook/client/clientset/versioned/scheme"
-
 	serializer "k8s.io/apimachinery/pkg/runtime/serializer"
 	rest "k8s.io/client-go/rest"
 )

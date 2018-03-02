@@ -1,33 +1,24 @@
 #!/bin/bash
 
-# Copyright 2017 The Kubernetes Authors.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+set -x
 
-set -o errexit
-set -o nounset
-set -o pipefail
+GOPATH=$(go env GOPATH)
+PACKAGE_NAME=k8s-admission-webhook
+REPO_ROOT="$GOPATH/src/$PACKAGE_NAME"
+DOCKER_REPO_ROOT="/go/src/$PACKAGE_NAME"
+DOCKER_CODEGEN_PKG="/go/src/k8s.io/code-generator"
 
-SCRIPT_ROOT=$(dirname ${BASH_SOURCE})/..
-CODEGEN_PKG=${CODEGEN_PKG:-$(cd ${SCRIPT_ROOT}; ls -d -1 ./vendor/k8s.io/code-generator 2>/dev/null || echo ../code-generator)}
+pushd $REPO_ROOT
 
-# generate the code with:
-# --output-base    because this script should also be able to run inside the vendor dir of
-#                  k8s.io/kubernetes. The output-base is needed for the generators to output into the vendor dir
-#                  instead of the $GOPATH directly. For normal projects this can be dropped.
-${CODEGEN_PKG}/generate-groups.sh "deepcopy,client,informer,lister" \
-  k8s-admission-webhook/client k8s-admission-webhook/apis \
-  foocontroller:v1alpha1
+rm -rf "$REPO_ROOT"/apis/foocontroller/v1alpha1/*.generated.go
 
-# To use your own boilerplate text append:
-#   --go-header-file ${SCRIPT_ROOT}/hack/custom-boilerplate.go.txt
+docker run --rm -ti -u $(id -u):$(id -g) \
+  -v "$REPO_ROOT":"$DOCKER_REPO_ROOT" \
+  -w "$DOCKER_REPO_ROOT" \
+  appscode/gengo:release-1.9 "$DOCKER_CODEGEN_PKG"/generate-groups.sh "deepcopy,client,informer,lister" \
+  "$PACKAGE_NAME"/client \
+  "$PACKAGE_NAME"/apis \
+  foocontroller:v1alpha1 \
+  --go-header-file "$DOCKER_REPO_ROOT/hack/boilerplate.go.txt"
+
+popd

@@ -22,14 +22,13 @@ import (
 	versioned "k8s-admission-webhook/client/clientset/versioned"
 	foocontroller "k8s-admission-webhook/client/informers/externalversions/foocontroller"
 	internalinterfaces "k8s-admission-webhook/client/informers/externalversions/internalinterfaces"
-	reflect "reflect"
-	sync "sync"
-	time "time"
-
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
+	reflect "reflect"
+	sync "sync"
+	time "time"
 )
 
 type sharedInformerFactory struct {
