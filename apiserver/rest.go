@@ -2,7 +2,7 @@ package apiserver
 
 import (
 	"errors"
-	"k8s-admission-webhook/apis/foocontroller/v1alpha1"
+	"k8s-extension-apiserver/apis/foocontroller/v1alpha1"
 	"log"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

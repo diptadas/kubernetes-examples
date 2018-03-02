@@ -1,7 +1,7 @@
 package main
 
 import (
-	"k8s-admission-webhook/apiserver"
+	"k8s-extension-apiserver/apiserver"
 	"log"
 )
 

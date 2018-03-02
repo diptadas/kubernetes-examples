@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net"
 
-	"k8s-admission-webhook/apis/foocontroller/v1alpha1"
+	"k8s-extension-apiserver/apis/foocontroller/v1alpha1"
 
 	"k8s.io/apimachinery/pkg/apimachinery/announced"
 	"k8s.io/apimachinery/pkg/apimachinery/registered"
