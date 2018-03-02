@@ -35,6 +35,13 @@ Creates a configmap with name specified in `configMapName`.
 
 ## Minikube walk-through
 
+Enable admission webhook:
+
+```console
+minikube delete; minikube start \
+--extra-config=apiserver.Admission.PluginNames="NamespaceLifecycle,LimitRanger,ServiceAccount,PersistentVolumeLabel,DefaultStorageClass,DefaultTolerationSeconds,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,ResourceQuota"
+```
+
 Setup everything:
 
 ```console
