@@ -4,8 +4,9 @@ import (
 	"net/http"
 
 	"encoding/json"
-	api "k8s-admission-webhook/apis/foocontroller/v1alpha1"
 	"log"
+
+	api "github.com/diptadas/k8s-admission-webhook/apis/foocontroller/v1alpha1"
 
 	admission "k8s.io/api/admission/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

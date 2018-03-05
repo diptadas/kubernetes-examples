@@ -16,8 +16,8 @@ limitations under the License.
 package versioned
 
 import (
+	foocontrollerv1alpha1 "github.com/diptadas/k8s-admission-webhook/client/clientset/versioned/typed/foocontroller/v1alpha1"
 	glog "github.com/golang/glog"
-	foocontrollerv1alpha1 "k8s-admission-webhook/client/clientset/versioned/typed/foocontroller/v1alpha1"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"

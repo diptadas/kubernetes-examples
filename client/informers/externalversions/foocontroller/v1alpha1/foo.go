@@ -19,15 +19,16 @@ limitations under the License.
 package v1alpha1
 
 import (
-	foocontroller_v1alpha1 "k8s-admission-webhook/apis/foocontroller/v1alpha1"
-	versioned "k8s-admission-webhook/client/clientset/versioned"
-	internalinterfaces "k8s-admission-webhook/client/informers/externalversions/internalinterfaces"
-	v1alpha1 "k8s-admission-webhook/client/listers/foocontroller/v1alpha1"
+	time "time"
+
+	foocontroller_v1alpha1 "github.com/diptadas/k8s-admission-webhook/apis/foocontroller/v1alpha1"
+	versioned "github.com/diptadas/k8s-admission-webhook/client/clientset/versioned"
+	internalinterfaces "github.com/diptadas/k8s-admission-webhook/client/informers/externalversions/internalinterfaces"
+	v1alpha1 "github.com/diptadas/k8s-admission-webhook/client/listers/foocontroller/v1alpha1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	watch "k8s.io/apimachinery/pkg/watch"
 	cache "k8s.io/client-go/tools/cache"
-	time "time"
 )
 
 // FooInformer provides access to a shared informer and lister for

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net"
 
-	clientset "k8s-admission-webhook/client/clientset/versioned"
+	clientset "github.com/diptadas/k8s-admission-webhook/client/clientset/versioned"
 
 	"github.com/openshift/generic-admission-server/pkg/apiserver"
 	admission "k8s.io/api/admission/v1beta1"

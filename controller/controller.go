@@ -17,10 +17,10 @@ import (
 	"k8s.io/client-go/tools/record"
 	"k8s.io/client-go/util/workqueue"
 
-	clientset "k8s-admission-webhook/client/clientset/versioned"
-	fooscheme "k8s-admission-webhook/client/clientset/versioned/scheme"
-	informers "k8s-admission-webhook/client/informers/externalversions"
-	listers "k8s-admission-webhook/client/listers/foocontroller/v1alpha1"
+	clientset "github.com/diptadas/k8s-admission-webhook/client/clientset/versioned"
+	fooscheme "github.com/diptadas/k8s-admission-webhook/client/clientset/versioned/scheme"
+	informers "github.com/diptadas/k8s-admission-webhook/client/informers/externalversions"
+	listers "github.com/diptadas/k8s-admission-webhook/client/listers/foocontroller/v1alpha1"
 
 	"strings"
 
