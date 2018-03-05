@@ -1,7 +1,7 @@
 package v1alpha1
 
 import (
-	"k8s-extension-apiserver/apis/foocontroller"
+	"github.com/diptadas/k8s-extension-apiserver/apis/foocontroller"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"

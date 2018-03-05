@@ -2,8 +2,9 @@ package apiserver
 
 import (
 	"errors"
-	"k8s-extension-apiserver/apis/foocontroller/v1alpha1"
 	"log"
+
+	"github.com/diptadas/k8s-extension-apiserver/apis/foocontroller/v1alpha1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"

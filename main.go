@@ -1,8 +1,9 @@
 package main
 
 import (
-	"k8s-extension-apiserver/apiserver"
 	"log"
+
+	"github.com/diptadas/k8s-extension-apiserver/apiserver"
 )
 
 func main() {

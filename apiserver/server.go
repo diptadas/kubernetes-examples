@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net"
 
-	"k8s-extension-apiserver/apis/foocontroller/v1alpha1"
+	"github.com/diptadas/k8s-extension-apiserver/apis/foocontroller/v1alpha1"
 
 	"k8s.io/apimachinery/pkg/apimachinery/announced"
 	"k8s.io/apimachinery/pkg/apimachinery/registered"
