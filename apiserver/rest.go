@@ -6,6 +6,7 @@ import (
 
 	"github.com/diptadas/k8s-extension-apiserver/apis/foocontroller/v1alpha1"
 
+	metainternalversion "k8s.io/apimachinery/pkg/apis/meta/internalversion"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -51,6 +52,50 @@ func (r *REST) Get(ctx apirequest.Context, name string, options *metav1.GetOptio
 			Namespace: ns,
 		},
 		Spec: "do-not-care",
+	}
+
+	return resp, nil
+}
+
+func (r *REST) NewList() runtime.Object {
+	return &v1alpha1.FooList{}
+}
+
+func (r *REST) List(ctx apirequest.Context, options *metainternalversion.ListOptions) (runtime.Object, error) {
+	ns, ok := apirequest.NamespaceFrom(ctx)
+	if !ok {
+		return nil, errors.New("missing namespace")
+	}
+
+	resp := &v1alpha1.FooList{
+		TypeMeta: metav1.TypeMeta{
+			APIVersion: "foocontroller.k8s.io/v1alpha1",
+			Kind:       "Foo",
+		},
+		Items: []v1alpha1.Foo{
+			{
+				TypeMeta: metav1.TypeMeta{
+					APIVersion: "foocontroller.k8s.io/v1alpha1",
+					Kind:       "Foo",
+				},
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "foo-1",
+					Namespace: ns,
+				},
+				Spec: "do-not-care",
+			},
+			{
+				TypeMeta: metav1.TypeMeta{
+					APIVersion: "foocontroller.k8s.io/v1alpha1",
+					Kind:       "Foo",
+				},
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "foo-2",
+					Namespace: ns,
+				},
+				Spec: "do-not-care",
+			},
+		},
 	}
 
 	return resp, nil
