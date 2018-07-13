@@ -1,12 +1,15 @@
 package main
 
 import (
+	"flag"
 	"log"
 
 	"github.com/diptadas/k8s-extension-apiserver/apiserver"
 )
 
 func main() {
+	flag.Parse()
+
 	stopCh := make(chan struct{})
 	defer close(stopCh)
 

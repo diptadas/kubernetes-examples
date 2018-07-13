@@ -5,11 +5,11 @@ import (
 	"log"
 
 	"github.com/diptadas/k8s-extension-apiserver/apis/foocontroller/v1alpha1"
-
 	metainternalversion "k8s.io/apimachinery/pkg/apis/meta/internalversion"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/watch"
 	apirequest "k8s.io/apiserver/pkg/endpoints/request"
 	"k8s.io/apiserver/pkg/registry/rest"
 )
@@ -17,6 +17,8 @@ import (
 type REST struct{}
 
 var _ rest.Getter = &REST{}
+var _ rest.Lister = &REST{}
+var _ rest.Watcher = &REST{}
 var _ rest.GroupVersionKindProvider = &REST{}
 
 func NewREST() *REST {
@@ -62,6 +64,8 @@ func (r *REST) NewList() runtime.Object {
 }
 
 func (r *REST) List(ctx apirequest.Context, options *metainternalversion.ListOptions) (runtime.Object, error) {
+	log.Println("List...")
+
 	ns, ok := apirequest.NamespaceFrom(ctx)
 	if !ok {
 		return nil, errors.New("missing namespace")
@@ -99,4 +103,10 @@ func (r *REST) List(ctx apirequest.Context, options *metainternalversion.ListOpt
 	}
 
 	return resp, nil
+}
+
+func (r *REST) Watch(ctx apirequest.Context, options *metainternalversion.ListOptions) (watch.Interface, error) {
+	log.Println("Watch...")
+	fw := NewFooWatcher()
+	return fw, nil
 }
