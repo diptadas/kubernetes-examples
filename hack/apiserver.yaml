@@ -13,7 +13,7 @@ data:
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: foo-operator
+  name: foo-apiserver
   namespace: default
   labels:
     app: foo
@@ -30,7 +30,7 @@ spec:
         app: foo
     spec:
       containers:
-      - name: operator
+      - name: apiserver
         image: diptadas/foo
         imagePullPolicy: IfNotPresent
         ports:
@@ -43,18 +43,3 @@ spec:
         secret:
           defaultMode: 420
           secretName: foo-apiserver-cert
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: foo-operator
-  namespace: default
-  labels:
-    app: foo
-spec:
-  ports:
-  - name: admission
-    port: 443
-    targetPort: 8443
-  selector:
-    app: foo

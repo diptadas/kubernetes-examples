@@ -10,6 +10,21 @@ spec:
   groupPriorityMinimum: 1000
   versionPriority: 15
   service:
-    name: foo-operator
+    name: foo-apiserver
     namespace: default
   version: v1alpha1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: foo-apiserver
+  namespace: default
+  labels:
+    app: foo
+spec:
+  ports:
+  - name: api
+    port: 443
+    targetPort: 8443
+  selector:
+    app: foo
