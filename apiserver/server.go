@@ -3,9 +3,10 @@ package apiserver
 import (
 	"fmt"
 	"net"
+	"os"
+	"path"
 
 	"github.com/diptadas/k8s-extension-apiserver/apis/foocontroller/v1alpha1"
-
 	"k8s.io/apimachinery/pkg/apimachinery/announced"
 	"k8s.io/apimachinery/pkg/apimachinery/registered"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -16,6 +17,7 @@ import (
 	"k8s.io/apiserver/pkg/registry/rest"
 	genericapiserver "k8s.io/apiserver/pkg/server"
 	genericoptions "k8s.io/apiserver/pkg/server/options"
+	"k8s.io/client-go/util/homedir"
 )
 
 const defaultEtcdPathPrefix = "/registry/foocontroller.k8s.io"
@@ -45,8 +47,17 @@ func Run(stopCh <-chan struct{}) error {
 	recommendedOptions := genericoptions.NewRecommendedOptions(defaultEtcdPathPrefix, Codecs.LegacyCodec(v1alpha1.SchemeGroupVersion))
 	recommendedOptions.Etcd = nil
 	recommendedOptions.SecureServing.BindPort = 8443
-	recommendedOptions.SecureServing.ServerCert.CertKey.CertFile = "/var/serving-cert/tls.crt"
-	recommendedOptions.SecureServing.ServerCert.CertKey.KeyFile = "/var/serving-cert/tls.key"
+
+	if PossiblyInCluster() {
+		recommendedOptions.SecureServing.ServerCert.CertKey.CertFile = "/var/serving-cert/tls.crt"
+		recommendedOptions.SecureServing.ServerCert.CertKey.KeyFile = "/var/serving-cert/tls.key"
+	} else {
+		kubeConfigPath := path.Join(homedir.HomeDir(), ".kube/config")
+		recommendedOptions.Authentication.SkipInClusterLookup = true
+		recommendedOptions.CoreAPI.CoreAPIKubeconfigPath = kubeConfigPath
+		recommendedOptions.Authorization.RemoteKubeConfigFile = kubeConfigPath
+		recommendedOptions.Authentication.RemoteKubeConfigFile = kubeConfigPath
+	}
 
 	if err := recommendedOptions.SecureServing.MaybeDefaultWithSelfSignedCerts("localhost", nil, []net.IP{net.ParseIP("127.0.0.1")}); err != nil {
 		return fmt.Errorf("error creating self-signed certificates: %v", err)
@@ -78,4 +89,13 @@ func Run(stopCh <-chan struct{}) error {
 	}
 
 	return genericServer.PrepareRun().Run(stopCh)
+}
+
+// github.com/appscode/kutil/meta
+// PossiblyInCluster returns true if loading an inside-kubernetes-cluster is possible.
+func PossiblyInCluster() bool {
+	fi, err := os.Stat("/var/run/secrets/kubernetes.io/serviceaccount/token")
+	return os.Getenv("KUBERNETES_SERVICE_HOST") != "" &&
+		os.Getenv("KUBERNETES_SERVICE_PORT") != "" &&
+		err == nil && !fi.IsDir()
 }
