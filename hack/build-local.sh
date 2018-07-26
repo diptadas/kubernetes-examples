@@ -4,6 +4,11 @@ set -xe
 GOPATH=$(go env GOPATH)
 REPO_ROOT="$GOPATH/src/github.com/diptadas/k8s-extension-apiserver"
 
+function cleanup {
+  ${REPO_ROOT}/hack/cleanup.sh
+}
+trap cleanup EXIT
+
 pushd ${REPO_ROOT}/hack
 
 # create necessary TLS certificates
