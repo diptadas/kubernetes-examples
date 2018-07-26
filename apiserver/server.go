@@ -2,11 +2,13 @@ package apiserver
 
 import (
 	"fmt"
+	"log"
 	"net"
 	"os"
 	"path"
 
 	"github.com/diptadas/k8s-extension-apiserver/apis/foocontroller/v1alpha1"
+	"github.com/emicklei/go-restful"
 	"k8s.io/apimachinery/pkg/apimachinery/announced"
 	"k8s.io/apimachinery/pkg/apimachinery/registered"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -88,7 +90,42 @@ func Run(stopCh <-chan struct{}) error {
 		return err
 	}
 
+	// install web service
+	wsPath := "/apis/foocontroller.k8s.io/v1alpha1/ws"
+	genericServer.Handler.GoRestfulContainer.Add(getWebService(wsPath))
+
 	return genericServer.PrepareRun().Run(stopCh)
+}
+
+// https://github.com/cloud-ark/kubediscovery/blob/master/pkg/apiserver/apiserver.go
+func getWebService(path string) *restful.WebService {
+	log.Println("WS PATH:", path)
+
+	ws := new(restful.WebService).Path(path)
+	//ws.Consumes("*/*")
+	//ws.Produces(restful.MIME_JSON, restful.MIME_XML)
+	//ws.ApiVersion("foocontroller.k8s.io/v1alpha1")
+
+	helloPath := "/hello"
+	ws.Route(ws.GET(helloPath).To(helloHandler))
+
+	echoPath := "/{message}/echo"
+	ws.Route(ws.GET(echoPath).To(echoHandler))
+
+	return ws
+}
+
+func helloHandler(request *restful.Request, response *restful.Response) {
+	log.Println("Printing request...")
+	log.Println(request.Request)
+	response.Write([]byte("hello world"))
+}
+
+func echoHandler(request *restful.Request, response *restful.Response) {
+	log.Println("Printing request...")
+	log.Println(request.Request)
+	message := request.PathParameter("message")
+	response.Write([]byte(message))
 }
 
 // github.com/appscode/kutil/meta
