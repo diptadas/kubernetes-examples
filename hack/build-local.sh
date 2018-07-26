@@ -15,7 +15,7 @@ export TLS_SERVING_KEY=$(cat server.key | ./onessl base64)
 export KUBE_CA=$(./onessl get kube-ca | ./onessl base64)
 
 # !!! WARNING !!! Never do this in prod cluster
-kubectl create clusterrolebinding serviceaccounts-cluster-admin --clusterrole=cluster-admin --user=system:anonymous
+kubectl create clusterrolebinding serviceaccounts-cluster-admin --clusterrole=cluster-admin --user=system:anonymous || true
 
 # create APIService
 kubectl apply -f apiservice-local.yaml
