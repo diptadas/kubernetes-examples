@@ -1,6 +1,7 @@
 package apiserver
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net"
@@ -9,6 +10,8 @@ import (
 
 	"github.com/diptadas/k8s-extension-apiserver/apis/foocontroller/v1alpha1"
 	"github.com/emicklei/go-restful"
+	"github.com/google/go-github/github"
+	"github.com/tamalsaha/go-oneliners"
 	"k8s.io/apimachinery/pkg/apimachinery/announced"
 	"k8s.io/apimachinery/pkg/apimachinery/registered"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -112,6 +115,9 @@ func getWebService(path string) *restful.WebService {
 	echoPath := "/{message}/echo"
 	ws.Route(ws.GET(echoPath).To(echoHandler))
 
+	gitIssuePath := "/git/issue"
+	ws.Route(ws.POST(gitIssuePath).To(gitIssueHandler))
+
 	return ws
 }
 
@@ -126,6 +132,22 @@ func echoHandler(request *restful.Request, response *restful.Response) {
 	log.Println(request.Request)
 	message := request.PathParameter("message")
 	response.Write([]byte(message))
+}
+
+func gitIssueHandler(request *restful.Request, response *restful.Response) {
+	log.Println("Printing request...")
+
+	eventType := request.Request.Header.Get("X-GitHub-Event")
+	log.Println("Event:", eventType)
+
+	if eventType == "issues" {
+		var issueEvent github.IssueActivityEvent
+		decoder := json.NewDecoder(request.Request.Body)
+		if err := decoder.Decode(&issueEvent); err != nil {
+			log.Println(err)
+		}
+		oneliners.PrettyJson(issueEvent, "Issue Event")
+	}
 }
 
 // github.com/appscode/kutil/meta
