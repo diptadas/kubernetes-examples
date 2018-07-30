@@ -16,6 +16,7 @@ import (
 
 type REST struct{}
 
+var _ rest.Creater = &REST{}
 var _ rest.Getter = &REST{}
 var _ rest.Lister = &REST{}
 var _ rest.Watcher = &REST{}
@@ -23,6 +24,13 @@ var _ rest.GroupVersionKindProvider = &REST{}
 
 func NewREST() *REST {
 	return &REST{}
+}
+
+func (r *REST) Create(ctx apirequest.Context, obj runtime.Object, createValidation rest.ValidateObjectFunc, includeUninitialized bool) (runtime.Object, error) {
+	log.Println("Create...")
+	foo := obj.(*v1alpha1.Foo)
+	log.Println(foo)
+	return foo, nil
 }
 
 func (r *REST) New() runtime.Object {
