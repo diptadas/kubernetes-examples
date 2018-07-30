@@ -83,19 +83,24 @@ func Run(stopCh <-chan struct{}) error {
 		return err
 	}
 
-	apiGroupInfo := genericapiserver.NewDefaultAPIGroupInfo(v1alpha1.GroupName, registry, Scheme, metav1.ParameterCodec, Codecs)
-	apiGroupInfo.GroupMeta.GroupVersion = v1alpha1.SchemeGroupVersion
-	v1alpha1storage := map[string]rest.Storage{}
-	v1alpha1storage["foos"] = NewREST()
-	apiGroupInfo.VersionedResourcesStorageMap["v1alpha1"] = v1alpha1storage
+	{
+		apiGroupInfo := genericapiserver.NewDefaultAPIGroupInfo(v1alpha1.GroupName, registry, Scheme, metav1.ParameterCodec, Codecs)
+		apiGroupInfo.GroupMeta.GroupVersion = v1alpha1.SchemeGroupVersion
+		v1alpha1storage := map[string]rest.Storage{}
+		v1alpha1storage["foos"] = NewREST()
+		v1alpha1storage["bars"] = NewBarREST()
+		apiGroupInfo.VersionedResourcesStorageMap["v1alpha1"] = v1alpha1storage
 
-	if err := genericServer.InstallAPIGroup(&apiGroupInfo); err != nil {
-		return err
+		if err := genericServer.InstallAPIGroup(&apiGroupInfo); err != nil {
+			return err
+		}
 	}
 
-	// install web service
-	wsPath := "/apis/foocontroller.k8s.io/v1alpha1/ws"
-	genericServer.Handler.GoRestfulContainer.Add(getWebService(wsPath))
+	{
+		// install web service
+		wsPath := "/apis/foocontroller.k8s.io/v1alpha1/ws"
+		genericServer.Handler.GoRestfulContainer.Add(getWebService(wsPath))
+	}
 
 	return genericServer.PrepareRun().Run(stopCh)
 }

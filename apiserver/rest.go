@@ -118,3 +118,28 @@ func (r *REST) Watch(ctx apirequest.Context, options *metainternalversion.ListOp
 	fw := NewFooWatcher()
 	return fw, nil
 }
+
+// REST BAR
+type BarREST struct{}
+
+var _ rest.Creater = &BarREST{}
+
+func NewBarREST() *BarREST {
+	return &BarREST{}
+}
+
+func (r *BarREST) GroupVersionKind(containingGV schema.GroupVersion) schema.GroupVersionKind {
+	return v1alpha1.SchemeGroupVersion.WithKind("Bar")
+}
+
+// curl -k -H 'Content-Type: application/json' -d '{"action":"labeled"}' https://192.168.99.100:8443/apis/foocontroller.k8s.io/v1alpha1/namespaces/default/bars
+func (r *BarREST) Create(ctx apirequest.Context, obj runtime.Object, createValidation rest.ValidateObjectFunc, includeUninitialized bool) (runtime.Object, error) {
+	log.Println("Create...")
+	bar := obj.(*v1alpha1.Bar)
+	log.Println(*bar.Action)
+	return bar, nil
+}
+
+func (r *BarREST) New() runtime.Object {
+	return &v1alpha1.Bar{}
+}
