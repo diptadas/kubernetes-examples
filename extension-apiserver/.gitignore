@@ -1,6 +1,0 @@
-.idea/
-.vscode/
-apiserver.local.config/
-hack/foo
-*.crt
-*.key
