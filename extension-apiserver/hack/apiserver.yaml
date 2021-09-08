@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: foo-apiserver-cert
+  namespace: default
+  labels:
+    app: foo
+type: kubernetes.io/tls
+data:
+  tls.crt: ${TLS_SERVING_CERT}
+  tls.key: ${TLS_SERVING_KEY}
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: foo-apiserver
+  namespace: default
+  labels:
+    app: foo
+  initializers:
+    pending: []
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: foo
+  template:
+    metadata:
+      labels:
+        app: foo
+    spec:
+      containers:
+      - name: apiserver
+        image: diptadas/foo
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8443
+        volumeMounts:
+        - mountPath: /var/serving-cert
+          name: serving-cert
+      volumes:
+      - name: serving-cert
+        secret:
+          defaultMode: 420
+          secretName: foo-apiserver-cert
