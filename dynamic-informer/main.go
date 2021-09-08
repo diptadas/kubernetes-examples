@@ -9,10 +9,10 @@ import (
 	"k8s.io/client-go/discovery"
 	"k8s.io/client-go/tools/cache"
 	"k8s.io/client-go/tools/clientcmd"
-	metacontrollerapi "k8s.io/metacontroller/apis/metacontroller/v1alpha1"
-	dynamicclientset "k8s.io/metacontroller/dynamic/clientset"
-	dynamicdiscovery "k8s.io/metacontroller/dynamic/discovery"
-	dynamicinformer "k8s.io/metacontroller/dynamic/informer"
+	metacontrollerapi "metacontroller/pkg/apis/metacontroller/v1alpha1"
+	dynamicclientset "metacontroller/pkg/dynamic/clientset"
+	dynamicdiscovery "metacontroller/pkg/dynamic/discovery"
+	dynamicinformer "metacontroller/pkg/dynamic/informer"
 )
 
 // list of resources to watch
@@ -50,7 +50,11 @@ func main() {
 	resources.Start(discoveryInterval)
 
 	// Create dynamic clientset (factory for dynamic clients).
-	dynClient := dynamicclientset.New(config, resources)
+	dynClient, err := dynamicclientset.New(config, resources)
+	if err != nil {
+		panic(err)
+	}
+
 	// Create dynamic informer factory (for sharing dynamic informers).
 	dynInformers := dynamicinformer.NewSharedInformerFactory(dynClient, informerRelist)
 
