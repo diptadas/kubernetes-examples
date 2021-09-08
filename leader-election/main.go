@@ -1,9 +1,8 @@
-package leader_election
+package main
 
 import (
 	"context"
 	"fmt"
-	"testing"
 	"time"
 
 	"github.com/diptadas/kubernetes-examples/util"
@@ -56,10 +55,10 @@ func runLeaderElection(podName string, kubeClient kubernetes.Interface) {
 	fmt.Println("Closing Leader Election for pod:", podName)
 }
 
-func TestLeaderElection(t *testing.T) {
+func main() {
 	kubeClient, err := util.GetKubeClient()
 	if err != nil {
-		t.Fatal(err)
+		panic(err)
 	}
 
 	// run two candidate in separate go routine
@@ -68,10 +67,8 @@ func TestLeaderElection(t *testing.T) {
 	runLeaderElection("pod-2", kubeClient)
 
 	// cleanup configMap
-	err = kubeClient.CoreV1().ConfigMaps(metav1.NamespaceDefault).Delete(leaderElectionConfigMap, &metav1.DeleteOptions{})
+	err = kubeClient.CoreV1().ConfigMaps(metav1.NamespaceDefault).Delete(context.Background(), leaderElectionConfigMap, metav1.DeleteOptions{})
 	if err != nil && kerr.IsNotFound(err) {
-		t.Fatal(err)
+		panic(err)
 	}
 }
-
-// go test -v -count=1 -run TestLeaderElection ./leader_election
