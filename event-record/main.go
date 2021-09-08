@@ -1,9 +1,9 @@
-package event_record
+package main
 
 import (
+	"context"
 	"fmt"
 	"log"
-	"testing"
 	"time"
 
 	"github.com/diptadas/kubernetes-examples/util"
@@ -17,21 +17,25 @@ import (
 	"k8s.io/client-go/tools/reference"
 )
 
-func TestEventRecord(t *testing.T) {
+func main() {
 	kubeClient, err := util.GetKubeClient()
 	if err != nil {
-		t.Fatal(err)
+		panic(err)
 	}
 
-	t.Log("Creating new configmap as reference object")
-	referenceObject, err := kubeClient.CoreV1().ConfigMaps(metav1.NamespaceDefault).Create(&core.ConfigMap{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "example-configmap",
-			Namespace: metav1.NamespaceDefault,
+	log.Println("Creating new configmap as reference object")
+	referenceObject, err := kubeClient.CoreV1().ConfigMaps(metav1.NamespaceDefault).Create(
+		context.Background(),
+		&core.ConfigMap{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "example-configmap",
+				Namespace: metav1.NamespaceDefault,
+			},
 		},
-	})
+		metav1.CreateOptions{},
+	)
 	if err != nil && kerr.IsAlreadyExists(err) {
-		t.Fatal(err)
+		panic(err)
 	}
 
 	e := eventer{
@@ -39,16 +43,16 @@ func TestEventRecord(t *testing.T) {
 		component: "golang-examples",
 	}
 
-	t.Log("Recording events using broadcaster")
+	log.Println("Recording events using broadcaster")
 	e.newEventRecorder().Event(referenceObject, core.EventTypeNormal, "event-test-1", "new event is recorded")
 	time.Sleep(time.Second) // time to complete event
 
-	t.Log("Creating events directly")
+	log.Println("Creating events directly")
 	event, err := e.createEvent(referenceObject, core.EventTypeNormal, "event-test-2", "new event is recorded")
 	if err != nil {
-		t.Fatal(err)
+		panic(err)
 	}
-	t.Log("Event recorded:", event.Name)
+	log.Println("Event recorded:", event.Name)
 }
 
 type eventer struct {
@@ -61,7 +65,7 @@ func (e eventer) newEventRecorder() record.EventRecorder {
 	broadcaster := record.NewBroadcaster()
 	broadcaster.StartEventWatcher(
 		func(event *core.Event) {
-			if _, err := e.client.CoreV1().Events(event.Namespace).Create(event); err != nil {
+			if _, err := e.client.CoreV1().Events(event.Namespace).Create(context.Background(), event, metav1.CreateOptions{}); err != nil {
 				log.Println(err)
 			} else {
 				log.Println("Event recorded:", event.Name)
@@ -80,20 +84,24 @@ func (e eventer) createEvent(object runtime.Object, eventType, reason, message s
 
 	t := metav1.Time{Time: time.Now()}
 
-	return e.client.CoreV1().Events(ref.Namespace).Create(&core.Event{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      fmt.Sprintf("%v.%x", ref.Name, t.UnixNano()),
-			Namespace: ref.Namespace,
+	return e.client.CoreV1().Events(ref.Namespace).Create(
+		context.Background(),
+		&core.Event{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      fmt.Sprintf("%v.%x", ref.Name, t.UnixNano()),
+				Namespace: ref.Namespace,
+			},
+			InvolvedObject: *ref,
+			Reason:         reason,
+			Message:        message,
+			FirstTimestamp: t,
+			LastTimestamp:  t,
+			Count:          1,
+			Type:           eventType,
+			Source:         core.EventSource{Component: e.component},
 		},
-		InvolvedObject: *ref,
-		Reason:         reason,
-		Message:        message,
-		FirstTimestamp: t,
-		LastTimestamp:  t,
-		Count:          1,
-		Type:           eventType,
-		Source:         core.EventSource{Component: e.component},
-	})
+		metav1.CreateOptions{},
+	)
 }
 
 // go test -v -count=1 -run TestEventRecord ./event_record
