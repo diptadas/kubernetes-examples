@@ -4,9 +4,9 @@ import (
 	"flag"
 	"log"
 
-	"github.com/diptadas/k8s-admission-webhook/admission"
-	clientset "github.com/diptadas/k8s-admission-webhook/client/clientset/versioned"
-	"github.com/diptadas/k8s-admission-webhook/controller"
+	"github.com/diptadas/kubernetes-examples/admission-webhook/admission"
+	clientset "github.com/diptadas/kubernetes-examples/admission-webhook/client/clientset/versioned"
+	"github.com/diptadas/kubernetes-examples/admission-webhook/controller"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 )

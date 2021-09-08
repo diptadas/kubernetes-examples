@@ -4,7 +4,7 @@ import (
 	"errors"
 	"log"
 
-	"github.com/diptadas/k8s-extension-apiserver/apis/foocontroller/v1alpha1"
+	"github.com/diptadas/kubernetes-examples/extension-apiserver/apis/foocontroller/v1alpha1"
 	metainternalversion "k8s.io/apimachinery/pkg/apis/meta/internalversion"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"

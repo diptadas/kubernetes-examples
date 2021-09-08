@@ -4,7 +4,7 @@ import (
 	"flag"
 	"log"
 
-	"github.com/diptadas/k8s-extension-apiserver/apiserver"
+	"github.com/diptadas/kubernetes-examples/extension-apiserver/apiserver"
 )
 
 func main() {

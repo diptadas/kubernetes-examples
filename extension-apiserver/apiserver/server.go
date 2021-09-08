@@ -8,10 +8,9 @@ import (
 	"os"
 	"path"
 
-	"github.com/diptadas/k8s-extension-apiserver/apis/foocontroller/v1alpha1"
+	"github.com/diptadas/kubernetes-examples/extension-apiserver/apis/foocontroller/v1alpha1"
 	"github.com/emicklei/go-restful"
 	"github.com/google/go-github/github"
-	"github.com/tamalsaha/go-oneliners"
 	"k8s.io/apimachinery/pkg/apimachinery/announced"
 	"k8s.io/apimachinery/pkg/apimachinery/registered"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -151,7 +150,7 @@ func gitIssueHandler(request *restful.Request, response *restful.Response) {
 		if err := decoder.Decode(&issueEvent); err != nil {
 			log.Println(err)
 		}
-		oneliners.PrettyJson(issueEvent, "Issue Event")
+		// oneliners.PrettyJson(issueEvent, "Issue Event")
 	}
 }
 

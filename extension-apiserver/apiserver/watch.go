@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/diptadas/k8s-extension-apiserver/apis/foocontroller/v1alpha1"
+	"github.com/diptadas/kubernetes-examples/extension-apiserver/apis/foocontroller/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"

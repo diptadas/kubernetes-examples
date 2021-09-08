@@ -19,7 +19,7 @@ limitations under the License.
 package v1alpha1
 
 import (
-	internalinterfaces "github.com/diptadas/k8s-admission-webhook/client/informers/externalversions/internalinterfaces"
+	internalinterfaces "github.com/diptadas/kubernetes-examples/admission-webhook/client/informers/externalversions/internalinterfaces"
 )
 
 // Interface provides access to all the informers in this group version.

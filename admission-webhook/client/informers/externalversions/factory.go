@@ -23,9 +23,9 @@ import (
 	sync "sync"
 	time "time"
 
-	versioned "github.com/diptadas/k8s-admission-webhook/client/clientset/versioned"
-	foocontroller "github.com/diptadas/k8s-admission-webhook/client/informers/externalversions/foocontroller"
-	internalinterfaces "github.com/diptadas/k8s-admission-webhook/client/informers/externalversions/internalinterfaces"
+	versioned "github.com/diptadas/kubernetes-examples/admission-webhook/client/clientset/versioned"
+	foocontroller "github.com/diptadas/kubernetes-examples/admission-webhook/client/informers/externalversions/foocontroller"
+	internalinterfaces "github.com/diptadas/kubernetes-examples/admission-webhook/client/informers/externalversions/internalinterfaces"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
