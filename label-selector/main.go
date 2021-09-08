@@ -1,12 +1,11 @@
-package util
+package main
 
 import (
-	"testing"
-
 	"k8s.io/apimachinery/pkg/labels"
+	"log"
 )
 
-func TestParseSelector(t *testing.T) {
+func main() {
 	selectorStr := "aa=a,bb=b"
 	labelsMap := map[string]string{
 		"aa": "a",
@@ -16,9 +15,9 @@ func TestParseSelector(t *testing.T) {
 
 	selector, err := labels.Parse(selectorStr)
 	if err != nil {
-		t.Fatal(err)
+		panic(err)
 	}
 
-	t.Log("is matched:", selector.Matches(labels.Set(labelsMap)))
-	t.Log("selector:", selector.String())
+	log.Println("is matched:", selector.Matches(labels.Set(labelsMap)))
+	log.Println("to string:", selector.String())
 }
