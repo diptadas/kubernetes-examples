@@ -96,7 +96,7 @@ spec:
 ```
 
 ```console
-$  kc apply -f foo-one.yaml
+$  kubectl apply -f foo-one.yaml
 foo "foo-one" created
 ```
 
