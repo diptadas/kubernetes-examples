@@ -3,10 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
+	"k8s.io/client-go/tools/clientcmd"
 	"log"
+	"os"
 	"time"
 
-	"github.com/diptadas/kubernetes-examples/util"
 	core "k8s.io/api/core/v1"
 	kerr "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -18,7 +19,12 @@ import (
 )
 
 func main() {
-	kubeClient, err := util.GetKubeClient()
+	kubeConfigPath := os.Getenv("HOME") + "/.kube/config"
+	config, err := clientcmd.BuildConfigFromFlags("", kubeConfigPath)
+	if err != nil {
+		panic(err)
+	}
+	kubeClient, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		panic(err)
 	}
