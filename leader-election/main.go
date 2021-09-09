@@ -3,9 +3,10 @@ package main
 import (
 	"context"
 	"fmt"
+	"k8s.io/client-go/tools/clientcmd"
+	"os"
 	"time"
 
-	"github.com/diptadas/kubernetes-examples/util"
 	kerr "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
@@ -56,7 +57,12 @@ func runLeaderElection(podName string, kubeClient kubernetes.Interface) {
 }
 
 func main() {
-	kubeClient, err := util.GetKubeClient()
+	kubeConfigPath := os.Getenv("HOME") + "/.kube/config"
+	config, err := clientcmd.BuildConfigFromFlags("", kubeConfigPath)
+	if err != nil {
+		panic(err)
+	}
+	kubeClient, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		panic(err)
 	}
