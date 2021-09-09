@@ -2,7 +2,7 @@
 set -xe
 
 # build binary
-go build -o foo ../main.go
+GOOS=linux GOARCH=amd64 go build -o foo ../main.go
 
 # build docker image
 docker build -t diptadas/foo .
